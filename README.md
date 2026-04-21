@@ -98,9 +98,20 @@ The Arduino sends RPM data over two serial channels:
 
 **Fix:** Reduced SoftwareSerial baud rate from 9600 -> 4800 -> 2400. At 2400 baud each bit is wider, giving both SoftwareSerial and the AD3 more margin. Most characters decoded correctly at 2400 baud, with only the first byte of each transmission garbled (a known SoftwareSerial limitation).
 
+### 5. Sensor signal kept bouncing indefinitely
+**Problem**: When the magnet held near sensor then pull back, the sensor kept detect the magnet signal even though the magnet wasn't near there.
+
+**Cause**: When the magnet passes near the sensor edge, the signal doesn't cleanly switch once from HIGH to LOW. It rapidly flickers HIGH, LOW, HIGH, LOW several times in microseconds before settling. Each flicker looks like a new magnet detection, so one pass counts as 3-5 rotations instead of 1.
+
+**Fix attempted #1**: Switched to CHANGE mode and checked ```digitalRead == LOW``` inside ISR to filter bounces. Failed because ```digitalRead``` inside an ISR reads the pin mid-bounce when the value is unstable (sometimes reading HIGH when it should be LOW and vice versa)
+
+**Fix attempted #2**: Used state machine to track magnet presence to only count OUT -> IN transitions. Still failed because ISR itself was firing on every bounce regardless, and the state logic couldn't keep up with the rapid flickering at the hardware level.
+
+**Final fix**: Switched to polling (removed interrupts method). Loop reads the pin state every iteration and only counts when sees ```lastState == HIGH && currentState == LOW```. If the signal bounces while LOW, ```lastState``` is already LOW so the condition never fires again until the magnet genuinely leaves and returns.
+
 ---
 
 ## What's Next
 
-- Adding LED to blink when detect magnet
+- ✅ Adding LED to blink when detect magnet
 - Log overnight data to PC using Python (pyserial) to plot activity graphs

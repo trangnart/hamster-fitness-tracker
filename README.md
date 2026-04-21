@@ -1,7 +1,10 @@
 # HAMSTER FITNESS TRACKER
 
 ## Introduction
-My hamster, Quyt, is 1.5+ years old and I noticed she seems less active at night than she used to be. This project tracks her nightly running to make sure she is still getting enough exercise. A healthy senior hamster is expected to run 2–4 km per night, so having real data helps me spot any changes in her activity early.
+My hamster, Quyt, is 1.5+ years old and I noticed she seems less active at night than she used to be (I often found her sleeping in the wheel LOL).
+<img width="960" height="1280" alt="IMG_3295 Large" src="https://github.com/user-attachments/assets/4ff3b1d9-b854-4430-8937-cc273c1263a1" />
+
+This project tracks her nightly running to make sure she is still getting enough exercise. A healthy senior hamster is expected to run 2–4 km per night, so having real data helps me spot any changes in her activity early.
 
 ## Project Overview
 Built a hamster wheel rotation tracker using an Arduino and a unipolar Hall-effect magnetic switch sensor. The system detects each rotation of the wheel using a magnet attached to the wheel and a Hall-effect sensor mounted on the cage frame. Rotation data is processed in real time to calculate RPM and total distance traveled, then streamed over UART serial communication and validated using a logic analyzer.

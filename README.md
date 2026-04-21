@@ -2,7 +2,8 @@
 
 ## Introduction
 My hamster, Quyt, is 1.5+ years old and I noticed she seems less active at night than she used to be (I often found her sleeping in the wheel LOL).
-<img width="960" height="1280" alt="IMG_3295 Large" src="https://github.com/user-attachments/assets/4ff3b1d9-b854-4430-8937-cc273c1263a1" />
+<img width="240" height="320" alt="IMG_3295 Small" src="https://github.com/user-attachments/assets/a07578ff-1bdd-4016-8be9-9b7f7adfdada" />
+
 
 This project tracks her nightly running to make sure she is still getting enough exercise. A healthy senior hamster is expected to run 2–4 km per night, so having real data helps me spot any changes in her activity early.
 

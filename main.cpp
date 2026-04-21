@@ -3,11 +3,13 @@
 SoftwareSerial mySerial(7, 8);
 //                     RX  TX
 const int HALL_PIN = 2;
-const unsigned long DEBOUNCE = 2000; // milisecond
-const unsigned long REPORT_INTERVAL_MS = 1000; // milisecond
+const int LED_PIN = 13;
+const unsigned long DEBOUNCE = 50000; // 50 ms
+const unsigned long REPORT_INTERVAL_MS = 1000; // 1000 ms
 
 volatile unsigned long pulseCount = 0;
 volatile unsigned long lastPulse = 0;
+volatile bool magnetDetected = false;
 
 void setup() {
   Serial.begin(9600);
@@ -16,19 +18,28 @@ void setup() {
   pinMode(HALL_PIN, INPUT_PULLUP);
   pinMode(LED_PIN, OUTPUT);
 
-  attachInterrupt(digitalPinToInterrupt(HALL_PIN), hallISR, FAILING);
+  attachInterrupt(digitalPinToInterrupt(HALL_PIN), hallISR, CHANGE); // only count LOW state
 }
 
 void hallISR(){
-  unsigned long now = micros();
+  if(digitalRead(HALL_PIN) == LOW){
+    unsigned long now = micros();
 
-  if(now - lastPulse > DEBOUNCE){
-    pulseCount++;
-    lastPulse = now;
+    if(now - lastPulse > DEBOUNCE){
+      pulseCount++;
+      lastPulse = now;
+      magnetDetected = true;
+    }
   }
 }
 
 void loop() {
+  if(magnetDetected){
+    digitalWrite(LED_PIN, HIGH);
+    magnetDetected = false;
+    delay(100); // 100 ms
+    digitalWrite(LED_PIN, LOW);
+  }
   unsigned long nowMS = millis();
   static unsigned long lastCount = 0;
   static unsigned long lastMS = 0;

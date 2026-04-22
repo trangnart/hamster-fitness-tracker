@@ -62,7 +62,7 @@ void loop() {
       Serial.print(rpm);
       Serial.print(", count= ");
       Serial.print(currentCount);
-      Serial.print(". Distance: ");
+      Serial.print(", distance: ");
       Serial.print(distance);
       Serial.print("\n============\n");
 

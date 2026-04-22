@@ -114,4 +114,4 @@ The Arduino sends RPM data over two serial channels:
 ## What's Next
 
 - ✅ Adding LED to blink when detect magnet
-- Log overnight data to PC using Python (pyserial) to plot activity graphs
+- ✅ Log overnight data to csv

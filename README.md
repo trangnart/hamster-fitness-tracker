@@ -36,8 +36,13 @@ Built a hamster wheel rotation tracker using an Arduino and a unipolar Hall-effe
 ### Hall-Effect Sensor
 The sensor detects magnetic fields. One coin magnet is taped to the hamster wheel. Every time the wheel spins and the magnet passes the sensor, the sensor output pulls LOW. The Arduino detects this falling edge and counts it as one rotation.
 
-### GPIO Interrupt
-Instead of checking the sensor continuously in `loop()`, `attachInterrupt()` is used so the CPU immediately responds the instant the sensor fires.
+### ~~GPIO Interrupt~~
+~~Instead of checking the sensor continuously in `loop()`, `attachInterrupt()` is used so the CPU immediately responds the instant the sensor fires.~~
+
+Interrupt method: Interrupts are designed for fast and clean signals while the Hall sensor with a **weak coin magnet** doesn't produce clean signal. For interrupts, the hardware watches for any voltage drop from HIGH to LOW — including tiny noise spikes, bounce flickers, and slow edges. Every single electrical flicker fires the ISR. The CPU has no way to know if that edge was a real magnet arrival or a noise spike. ```digitalRead`` inside the ISR also reads at the exact moment of the edge — which is the worst possible moment because the signal is still transitioning and unstable.
+
+### GPIO Polling
+Polling method: used ```lastState == HIGH && currentState == LOW```. This condition only fires when the signal was genuinely HIGH before and is now genuinely LOW.
 
 ### Debounce Logic
 When the magnet passes the sensor edge, the signal can flicker briefly before settling, causing false counts. The debounce window (5ms) ignores any pulse that arrives too soon after the last one. Since the hamster wheel can spin at most a few rotations per second, any pulse arriving within 5ms of the last is physically impossible and is treated as noise.
